@@ -11,6 +11,7 @@ from exceptions import EndpointError
 
 load_dotenv()
 
+logger = logging.getLogger(__name__)
 
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN')
 TELEGRAM_TOKEN = os.getenv('TOKEN')
@@ -39,7 +40,7 @@ def send_message(bot, message):
 
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
-        logging.info('Сообщение отправлено.')
+        logging.debug('Сообщение отправлено.')
     except telegram.TelegramError:
         logging.error('Не удалось отправить сообщение.')
 
@@ -90,10 +91,10 @@ def main():
 
     logging.basicConfig(
         level=logging.DEBUG,
-        format='%(asctime)s, %(levelname)s, %(message)s'
+        format='%(asctime)s, %(levelname)s, %(message)s',
     )
-    handler = logging.StreamHandler(sys.stdout)
-    logging.addHandler(handler)
+    handler = logging.StreamHandler(stream=sys.stdout)
+    logger.addHandler(handler)
 
     if not check_tokens():
         logging.critical('Отсутствуют переменные окружения')
