@@ -30,14 +30,12 @@ HOMEWORK_VERDICTS = {
 
 
 def check_tokens():
-    '''Проверка доступности переменных окружения.'''
-
+    """Проверка доступности переменных окружения."""
     return all((PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID))
 
 
 def send_message(bot, message):
-    '''Отправляет сообщение в Telegram чат.'''
-
+    """Отправляет сообщение в Telegram чат."""
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logging.debug('Сообщение отправлено.')
@@ -46,8 +44,7 @@ def send_message(bot, message):
 
 
 def get_api_answer(timestamp):
-    '''Делает запрос к единственному эндпоинту API-сервиса.'''
-
+    """Делает запрос к единственному эндпоинту API-сервиса."""
     try:
         response = requests.get(
             ENDPOINT, headers=HEADERS, params={'from_date': timestamp})
@@ -60,8 +57,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    '''Проверка ответа API.'''
-
+    """Проверка ответа API."""
     if isinstance(response, dict) is False:
         raise TypeError('Получен неверный тип данных.')
     if 'homeworks' not in response:
@@ -74,8 +70,7 @@ def check_response(response):
 
 
 def parse_status(homework):
-    '''Извлекает статус домашней работы.'''
-
+    """Извлекает статус домашней работы."""
     homework_name = homework.get('homework_name')
     homework_status = homework.get('status')
     if 'homework_name' not in homework:
@@ -88,7 +83,6 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-
     logging.basicConfig(
         level=logging.DEBUG,
         format='%(asctime)s, %(levelname)s, %(message)s',
