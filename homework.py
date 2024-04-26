@@ -58,13 +58,13 @@ def get_api_answer(timestamp):
 
 def check_response(response):
     """Проверка ответа API."""
-    if isinstance(response, dict) is False:
+    if not isinstance(response, dict):
         raise TypeError('Получен неверный тип данных.')
     if 'homeworks' not in response:
         raise KeyError('В ответе API нет ключа homeworks.')
     if 'current_date' not in response:
         raise KeyError('В ответе API нет ключа current_date.')
-    if isinstance(response['homeworks'], list) is False:
+    if not isinstance(response['homeworks'], list):
         raise TypeError('Неверный тип данных homeworks.')
     return response['homeworks']
 
@@ -102,9 +102,9 @@ def main():
     while True:
         try:
             response = get_api_answer(timestamp)
-            homework = check_response(response)
-            if homework:
-                new_message = parse_status(homework[0])
+            homeworks = check_response(response)
+            if homeworks:
+                new_message = parse_status(homeworks[0])
                 if new_message != prev_message:
                     send_message(bot, new_message)
                     prev_message = new_message
